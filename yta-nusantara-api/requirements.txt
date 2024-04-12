@@ -1,0 +1,16 @@
+Flask==3.0
+flask-cors
+PyMySQL
+SQLAlchemy
+Flask-SQLAlchemy
+cryptography
+Flask-SQLAlchemy
+Flask-RESTful
+Flask-RESTful-Swagger
+Flask-JWT-Extended
+flasgger
+python-dotenv
+flask_bcrypt
+minio
+requests
+awesome-slugify
