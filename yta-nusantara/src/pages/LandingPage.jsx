@@ -3,6 +3,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Flickity from 'flickity';
 import 'flickity/css/flickity.css';
+import Navbar from '../components/Navbar';
 
 const LandingPage = () => {
   useEffect(() => {
@@ -14,7 +15,14 @@ const LandingPage = () => {
     });
 
     // Initialize Flickity for ihtCarousel
-    const ihtCarousel = new Flickity('#ihtCarousel', {
+    const ihtCarousel = new Flickity('#ihtCarousel-example1', {
+      cellAlign: 'left',
+      contain: true,
+      prevNextButtons: false,
+      wrapAround: false,
+      groupCells: true
+    });
+    const ihtCarousel2 = new Flickity('#ihtCarousel-example2', {
       cellAlign: 'left',
       contain: true,
       prevNextButtons: false,
@@ -34,156 +42,126 @@ const LandingPage = () => {
     // Cleanup on component unmount
     return () => {
       ihtCarousel.destroy();
+      ihtCarousel2.destroy();
       bnnGallery.destroy();
     };
   }, []);
 
+
+  function Carousel({
+    // eslint-disable-next-line react/prop-types
+    title = "default",
+  }) {
     return (
-<>
-  <nav className="container my-4">
-    <div className="flex flex-col w-full lg:flex-row lg:items-center lg:gap-16">
-      {/* Logo & Toggler Button here */}
-      <div className="flex items-center justify-between">
-        {/* LOGO */}
-        <a href="/">
-          <img
-            src="/assets/svg/logo-bg-1.svg"
-            className="h-full max-h-12 md:max-h-[80px]"
-            alt=""
-          />
-        </a>
-        {/* RESPONSIVE NAVBAR BUTTON TOGGLER */}
-        <div className="block lg:hidden">
-          <button
-            className="p-1 outline-none mobileMenuButton"
-            id="navbarToggler"
-            data-target="#navigation"
-          >
-            <svg
-              className="text-dark w-7 h-7"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 8h16M4 16h16"
-              />
-            </svg>
-          </button>
+      <div id={`ihtCarousel-${title}`} className="ml-4 md:ml-[50px]">
+      {/* Card 1 */}
+      <div className="rounded-2xl w-[345px] lg:w- h-[275px] relative bg-gradient overflow-hidden mr-[30px]">
+        <div className="absolute px-[10px] py-[6px] bg-primary text-white rounded-full top-4 right-4 font-semibold text-xs">
+          Komunikasi Publik &amp; Kepemimpinan
         </div>
+        <div className="absolute bottom-[30px] left-4 z-10 right-4">
+          {/* <a href="#" className="text-xl text-light font-bold mb-2">
+            Kementerian Pertahanan RI
+          </a> */}
+          <p className="line-clamp-3 text-sm text-light leading-[22px]">
+            Pelaksanaan program di MTC Training Centre Tomohon selama 3 (tiga)
+            bulan sesuai permintaan dari Kementerian Pertahanan RI di Jakarta.
+            Materi manajemen dan komputer (keterampilan dasar) diberikan oleh
+            para pelatih
+          </p>
+        </div>
+        <img src="/assets/images/iht-1.webp" className="h-full w-full" alt="" />
+        {/* gradient background */}
+        <div className="absolute top-0 bg-gradient inset-0" />
       </div>
-      {/* Nav Menu */}
-      <div className="hidden lg:block w-full" id="navigation">
-        <div className="flex flex-col items-baseline gap-4 mt-6 lg:justify-between lg:flex-row lg:items-center lg:mt-0">
-          <div className="flex flex-col w-full gap-4 lg:gap-[50px] lg:items-center lg:flex-row">
-            {/* <a href="#" class="nav-link-item">Home</a> */}
-            <button
-              href="#"
-              className="nav-link-item"
-              data-dropdown-toggle="dropdownOne"
-              id="dropdownOneButton"
-              data-dropdown-placement="bottom-start"
-            >
-              Program
-              <img src="/assets/svg/ic-chevron.svg" alt="" />
-            </button>
-            {/* Dropdown menu */}
-            <div
-              id="dropdownOne"
-              className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg box-shadow"
-            >
-              <ul className="py-2 text-sm text-dark-1 font-medium md:whitespace-nowrap">
-                <li>
-                  <button
-                    id="dropdownTwoButton"
-                    data-dropdown-toggle="dropdownTwo"
-                    type="button"
-                    className="flex items-center justify-between w-full px-4 py-2 hover:bg-gray-100"
-                  >
-                    In House Training
-                    <img
-                      src="/assets/svg/ic-chevron.svg"
-                      className="-rotate-90"
-                      alt=""
-                    />
-                  </button>
-                  <div
-                    id="dropdownTwo"
-                    className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg box-shadow w-[320px] md:w-auto"
-                  >
-                    <ul className="py-2 text-sm text-dark-1 font-medium md:whitespace-nowrap grid grid-rows-3 grid-flow-col gap-2">
-                      <li>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 hover:bg-gray-100"
-                        >
-                          Public Speaking &amp; Leadership
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 hover:bg-gray-100"
-                        >
-                          Management &amp; Computer
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 hover:bg-gray-100"
-                        >
-                          Marketing &amp; Distribution
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 hover:bg-gray-100"
-                        >
-                          Komunikasi Publik &amp; Kepemimpinan
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 hover:bg-gray-100"
-                        >
-                          Manajemen &amp; Komputer
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 hover:bg-gray-100"
-                        >
-                          Pemasaran &amp; Distribusi
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-                <li>
-                  <a href="#" className="block px-4 py-2 hover:bg-gray-100">
-                    Corporate Social Responsibility
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div className="lg:ml-auto">
-              <a href="tel:+6285398520322" className="btn-primary">
-                Hubungi Kami
-              </a>
-            </div>
-          </div>
+      {/* Card 2 */}
+      <div className="rounded-2xl w-[345px] lg:w- h-[275px] relative bg-gradient overflow-hidden mr-[30px]">
+        <div className="absolute px-[10px] py-[6px] bg-primary text-white rounded-full top-4 right-4 font-semibold text-xs">
+          Pemasaran &amp; Distribusi
         </div>
+        <div className="absolute bottom-[30px] left-4 z-10 right-4">
+          {/* <a href="#" className="text-xl text-light font-bold mb-2">
+            PT. Pegadaian
+          </a> */}
+          <p className="line-clamp-3 text-sm text-light leading-[22px]">
+            Pelaksanaan program sesuai permintaan dari PT. PEGADAIAN (Kantor
+            Wilayah V – Manado). Materi dan topik workshop: Strategi Pemasaran
+            dan tantangannya.
+          </p>
+        </div>
+        <img src="/assets/images/iht-2.webp" className="h-full w-full" alt="" />
+        {/* gradient background */}
+        <div className="absolute top-0 bg-gradient inset-0" />
+      </div>
+      {/* Card 3 */}
+      <div className="rounded-2xl w-[345px] lg:w- h-[275px] relative bg-gradient overflow-hidden mr-[30px]">
+        <div className="absolute px-[10px] py-[6px] bg-primary text-white rounded-full top-4 right-4 font-semibold text-xs">
+          Komunikasi Publik &amp; Kepemimpinan
+        </div>
+        <div className="absolute bottom-[30px] left-4 z-10 right-4">
+          {/* <a href="#" className="text-xl text-light font-bold mb-2">
+            Kementerian Pangan RI
+          </a> */}
+          <p className="line-clamp-3 text-sm text-light leading-[22px]">
+            Pelaksanaan program in-house training 1 (satu) hari sesuai
+            permintaan dari Balai Karantina - Kementrian Pangan RI. Para dokter
+            dan beberapa pegawai dengan persiapan yang matang mengikuti program
+            ini.
+          </p>
+        </div>
+        <img src="/assets/images/iht-3.webp" className="h-full w-full" alt="" />
+        {/* gradient background */}
+        <div className="absolute top-0 bg-gradient inset-0" />
+      </div>
+      {/* Card 4 */}
+      <div className="rounded-2xl w-[345px] lg:w- h-[275px] relative bg-gradient overflow-hidden mr-[30px]">
+        <div className="absolute px-[10px] py-[6px] bg-primary text-white rounded-full top-4 right-4 font-semibold text-xs">
+          Komunikasi Publik &amp; Kepemimpinan
+        </div>
+        <div className="absolute bottom-[30px] left-4 z-10 right-4">
+          {/* <a href="#" className="text-xl text-light font-bold mb-2">
+            IPDN
+          </a> */}
+          <p className="line-clamp-3 text-sm text-light leading-[22px]">
+            Penyelenggaraan Training oleh YTA Nusantara selama 3 (tiga) bulan di
+            IPDN (Institut Pemerintahan Dalam Negeri)@2022. Teknik komunikasi
+            publik yang efektif dimulai dari kesadaran bahwa kita perlu secara
+            bersama – sama mencapai tujuan komunikasi tersebut.
+          </p>
+        </div>
+        <img src="/assets/images/iht-4.webp" className="h-full w-full" alt="" />
+        {/* gradient background */}
+        <div className="absolute top-0 bg-gradient inset-0" />
+      </div>
+      {/* Card 5 */}
+      <div className="rounded-2xl w-[345px] lg:w- h-[275px] relative bg-gradient overflow-hidden mr-[30px]">
+        <div className="absolute px-[10px] py-[6px] bg-primary text-white rounded-full top-4 right-4 font-semibold text-xs">
+          Pemasaran &amp; Distribusi
+        </div>
+        <div className="absolute bottom-[30px] left-4 z-10 right-4">
+          <a href="#" className="text-xl text-light font-bold mb-2">
+            PT. Daya Adicipta Wisesa
+          </a>
+          <p className="line-clamp-3 text-sm text-light leading-[22px]">
+            Setiap karyawan senior maupun karyawan baru perlu terus meningkatkan
+            kemampuan dan pengetahuan di bidang ini. Sebesar apapun perusahaan ,
+            sekuat apapun brand dari perusahaan tersebut, tanpa karyawan
+            terlatih dan terpercaya di bidang pemasaran dan distribusi, maka
+            perusahaan akan mengalami kesulitan dalam melakukan penjuaalan dan
+            penjualan berkala yang ditargetkan
+          </p>
+        </div>
+        <img src="/assets/images/iht-5.webp" className="h-full w-full" alt="" />
+        {/* gradient background */}
+        <div className="absolute top-0 bg-gradient inset-0" />
       </div>
     </div>
-  </nav>
+    )
+  }
+
+    return (
+<>
+  <Navbar />
 
   {/* Hero */}
   <section className="relative z-0 bg-secondary py-[50px]">
@@ -269,117 +247,47 @@ const LandingPage = () => {
       <div className="w-full mb-[50px]">
         <div className="flex flex-col items-center justify-center">
           <p className="text-xl text-orange font-semibold mb-5">Our Services</p>
-          <p className="text-[36px] md:text-[48px] font-bold md:leading-[64px] text-dark-2 text-center">
+          {/* <p className="text-[36px] md:text-[48px] font-bold md:leading-[64px] text-dark-2 text-center">
             Dokumentasi In House Training
-          </p>
+          </p> */}
         </div>
-      </div>
-    </div>
-    <div id="ihtCarousel" className="ml-4 md:ml-[50px]">
-      {/* Card 1 */}
-      <div className="rounded-2xl w-[345px] lg:w- h-[275px] relative bg-gradient overflow-hidden mr-[30px]">
-        <div className="absolute px-[10px] py-[6px] bg-primary text-white rounded-full top-4 right-4 font-semibold text-xs">
-          Komunikasi Publik &amp; Kepemimpinan
-        </div>
-        <div className="absolute bottom-[30px] left-4 z-10 right-4">
-          <a href="#" className="text-xl text-light font-bold mb-2">
-            Kementerian Pertahanan RI
-          </a>
-          <p className="line-clamp-3 text-sm text-light leading-[22px]">
-            Pelaksanaan program di MTC Training Centre Tomohon selama 3 (tiga)
-            bulan sesuai permintaan dari Kementerian Pertahanan RI di Jakarta.
-            Materi manajemen dan komputer (keterampilan dasar) diberikan oleh
-            para pelatih
-          </p>
-        </div>
-        <img src="/assets/images/iht-1.webp" className="h-full w-full" alt="" />
-        {/* gradient background */}
-        <div className="absolute top-0 bg-gradient inset-0" />
-      </div>
-      {/* Card 2 */}
-      <div className="rounded-2xl w-[345px] lg:w- h-[275px] relative bg-gradient overflow-hidden mr-[30px]">
-        <div className="absolute px-[10px] py-[6px] bg-primary text-white rounded-full top-4 right-4 font-semibold text-xs">
-          Pemasaran &amp; Distribusi
-        </div>
-        <div className="absolute bottom-[30px] left-4 z-10 right-4">
-          <a href="#" className="text-xl text-light font-bold mb-2">
-            PT. Pegadaian
-          </a>
-          <p className="line-clamp-3 text-sm text-light leading-[22px]">
-            Pelaksanaan program sesuai permintaan dari PT. PEGADAIAN (Kantor
-            Wilayah V – Manado). Materi dan topik workshop: Strategi Pemasaran
-            dan tantangannya.
-          </p>
-        </div>
-        <img src="/assets/images/iht-2.webp" className="h-full w-full" alt="" />
-        {/* gradient background */}
-        <div className="absolute top-0 bg-gradient inset-0" />
-      </div>
-      {/* Card 3 */}
-      <div className="rounded-2xl w-[345px] lg:w- h-[275px] relative bg-gradient overflow-hidden mr-[30px]">
-        <div className="absolute px-[10px] py-[6px] bg-primary text-white rounded-full top-4 right-4 font-semibold text-xs">
-          Komunikasi Publik &amp; Kepemimpinan
-        </div>
-        <div className="absolute bottom-[30px] left-4 z-10 right-4">
-          <a href="#" className="text-xl text-light font-bold mb-2">
-            Kementerian Pangan RI
-          </a>
-          <p className="line-clamp-3 text-sm text-light leading-[22px]">
-            Pelaksanaan program in-house training 1 (satu) hari sesuai
-            permintaan dari Balai Karantina - Kementrian Pangan RI. Para dokter
-            dan beberapa pegawai dengan persiapan yang matang mengikuti program
-            ini.
-          </p>
-        </div>
-        <img src="/assets/images/iht-3.webp" className="h-full w-full" alt="" />
-        {/* gradient background */}
-        <div className="absolute top-0 bg-gradient inset-0" />
-      </div>
-      {/* Card 4 */}
-      <div className="rounded-2xl w-[345px] lg:w- h-[275px] relative bg-gradient overflow-hidden mr-[30px]">
-        <div className="absolute px-[10px] py-[6px] bg-primary text-white rounded-full top-4 right-4 font-semibold text-xs">
-          Komunikasi Publik &amp; Kepemimpinan
-        </div>
-        <div className="absolute bottom-[30px] left-4 z-10 right-4">
-          <a href="#" className="text-xl text-light font-bold mb-2">
-            IPDN
-          </a>
-          <p className="line-clamp-3 text-sm text-light leading-[22px]">
-            Penyelenggaraan Training oleh YTA Nusantara selama 3 (tiga) bulan di
-            IPDN (Institut Pemerintahan Dalam Negeri)@2022. Teknik komunikasi
-            publik yang efektif dimulai dari kesadaran bahwa kita perlu secara
-            bersama – sama mencapai tujuan komunikasi tersebut.
-          </p>
-        </div>
-        <img src="/assets/images/iht-4.webp" className="h-full w-full" alt="" />
-        {/* gradient background */}
-        <div className="absolute top-0 bg-gradient inset-0" />
-      </div>
-      {/* Card 5 */}
-      <div className="rounded-2xl w-[345px] lg:w- h-[275px] relative bg-gradient overflow-hidden mr-[30px]">
-        <div className="absolute px-[10px] py-[6px] bg-primary text-white rounded-full top-4 right-4 font-semibold text-xs">
-          Pemasaran &amp; Distribusi
-        </div>
-        <div className="absolute bottom-[30px] left-4 z-10 right-4">
-          <a href="#" className="text-xl text-light font-bold mb-2">
-            PT. Daya Adicipta Wisesa
-          </a>
-          <p className="line-clamp-3 text-sm text-light leading-[22px]">
-            Setiap karyawan senior maupun karyawan baru perlu terus meningkatkan
-            kemampuan dan pengetahuan di bidang ini. Sebesar apapun perusahaan ,
-            sekuat apapun brand dari perusahaan tersebut, tanpa karyawan
-            terlatih dan terpercaya di bidang pemasaran dan distribusi, maka
-            perusahaan akan mengalami kesulitan dalam melakukan penjuaalan dan
-            penjualan berkala yang ditargetkan
-          </p>
-        </div>
-        <img src="/assets/images/iht-5.webp" className="h-full w-full" alt="" />
-        {/* gradient background */}
-        <div className="absolute top-0 bg-gradient inset-0" />
       </div>
     </div>
   </section>
+
   {/* Corporate Social Responsibility */}
+  <section className="relative py-[50px] px-4 max-w-screen-xl mx-auto">
+    <div className="flex flex-col md:flex-row justify-between lg:px-[50px] items-center gap-[50px] my-10 lg:my-0">
+      <div className="max-w-[660px] w-full">
+        <div className="flex flex-col relative pt-14 md:pt-0">
+          <img
+            src="/assets/svg/wavy-ornament.svg"
+            className="absolute top-6 right-0"
+            alt=""
+          />
+          <p className="text-[36px] md:text-[48px] font-bold md:leading-[64px] text-dark-2">
+            In House Training
+          </p>
+          <p className="text-lg text-dark-1 leading-8 font-normal mt-4 mb-10">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          </p>
+          {/* <a href="tel:+6285398520322" className="btn-primary">
+            Hubungi Kami
+          </a> */}
+        </div>
+      </div>
+      <div className="max-w-[647px] w-full">
+        <img
+          src="/assets/images/corporate-social.webp"
+          className="w-full"
+          alt=""
+        />
+      </div>
+    </div>
+    
+    <Carousel title="example1" />
+  </section>
+  
   <section className="relative py-[50px] px-4 max-w-screen-xl mx-auto">
     <div className="flex flex-col md:flex-row justify-between lg:px-[50px] items-center gap-[50px] my-10 lg:my-0">
       <div className="max-w-[660px] w-full">
@@ -401,9 +309,7 @@ const LandingPage = () => {
             Nusantara membuka program rumah-rumah belajar di wilayah cakupan
             NKRI (Negara Kesatuan Republik Indonesia).
           </p>
-          <a href="tel:+6285398520322" className="btn-primary">
-            Hubungi Kami
-          </a>
+
         </div>
       </div>
       <div className="max-w-[647px] w-full">
@@ -415,6 +321,74 @@ const LandingPage = () => {
       </div>
     </div>
   </section>
+
+    {/* No Image */}
+    <section className="relative py-[50px] px-4 max-w-screen-xl mx-auto">
+    <div className="flex flex-col md:flex-row justify-between lg:px-[50px] items-center gap-[50px] my-10 lg:my-0">
+      <div className="max-w-[660px] w-full">
+        <div className="flex flex-col relative pt-14 md:pt-0">
+          <img
+            src="/assets/svg/wavy-ornament.svg"
+            className="absolute top-6 right-0"
+            alt=""
+          />
+          <p className="text-[36px] md:text-[48px] font-bold md:leading-[64px] text-dark-2">
+            In House Training
+          </p>
+          <p className="text-lg text-dark-1 leading-8 font-normal mt-4 mb-10">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          </p>
+          {/* <a href="tel:+6285398520322" className="btn-primary">
+            Hubungi Kami
+          </a> */}
+        </div>
+      </div>
+      <div className="max-w-[647px] w-full">
+        <img
+          src=""
+          className="w-full"
+          alt=""
+        />
+      </div>
+    </div>
+    
+    <Carousel title="example2" />
+  </section>
+  
+  <section className="relative py-[50px] px-4 max-w-screen-xl mx-auto">
+    <div className="flex flex-col md:flex-row justify-between lg:px-[50px] items-center gap-[50px] my-10 lg:my-0">
+      <div className="max-w-[660px] w-full">
+        <div className="flex flex-col relative pt-14 md:pt-0">
+          <img
+            src="/assets/svg/wavy-ornament.svg"
+            className="absolute top-6 right-0"
+            alt=""
+          />
+          <p className="text-[36px] md:text-[48px] font-bold md:leading-[64px] text-dark-2">
+            Corporate Social <br className="hidden md:block" />
+            <span className="text-primary">Responsibility</span>
+          </p>
+          <p className="text-lg text-dark-1 leading-8 font-normal mt-4 mb-10">
+            Pengelolaan CSR bukan sekedar membangun citra perusahaan, namun
+            perusahaan perlu dibantu untuk dapat memberi kontribusi yang tepat
+            sasaran dan berguna bagi masyarakat. YTA Nusantara mengelola CSR
+            dari perusahaan secara berkala dan khusus di bidang pendidikan, YTA
+            Nusantara membuka program rumah-rumah belajar di wilayah cakupan
+            NKRI (Negara Kesatuan Republik Indonesia).
+          </p>
+
+        </div>
+      </div>
+      <div className="max-w-[647px] w-full">
+        <img
+          src=""
+          className="w-full"
+          alt=""
+        />
+      </div>
+    </div>
+  </section>
+
   {/* Beragam Program Pengelolaan CSR */}
   <section className="relative py-[50px]">
     <div className="container">
