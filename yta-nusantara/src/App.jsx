@@ -21,6 +21,7 @@ import SubProgramEditPage from "./pages/SubProgramEditPage";
 import WorkshopPage from "./pages/WorkshopPage";
 import WorkshopCreatePage from "./pages/WorkshopCreatePage";
 import WorkshopEditPage from "./pages/WorkshopEditPage";
+import UserPasswordEditPage from "./pages/SettingPage";
 
 
 function ProgramRoutes() {
@@ -53,6 +54,14 @@ function WorkshopRoutes() {
   );
 }
 
+function SettingRoutes() {
+  return (
+    <Routes>
+      <Route path="/" element={<UserPasswordEditPage />} />
+    </Routes>
+  );
+}
+
 function AdminRoutes() {
   return (
     <Routes>
@@ -60,10 +69,10 @@ function AdminRoutes() {
       <Route path="/program/*" element={<ProgramRoutes />} />
       <Route path="/sub-program/*" element={<SubProgramRoutes />} />
       <Route path="/workshop/*" element={<WorkshopRoutes />} />
+      <Route path="/setting/*" element={<SettingRoutes />} />
     </Routes>
   );
 }
-
 export default function App() {
   return (
     <AuthProvider>
@@ -133,7 +142,7 @@ function LoginPage() {
   let location = useLocation();
   let auth = useAuth();
 
-  let from = location.state?.from?.pathname || "/";
+  let from = location.state?.from?.pathname || "/admin";
 
   function handleSubmit(event) {
     event.preventDefault();

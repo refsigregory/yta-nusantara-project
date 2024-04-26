@@ -713,6 +713,205 @@ class ArtikelResource(Resource):
         else:
             return jsonify({"message": "Artikel not found"}), 404
 
+class UserResource(Resource):
+    def get(self, user_id=None):
+        """
+        Get user(s) by ID or get all users
+        ---
+        tags:
+        - User
+        parameters:
+          - name: Authorization
+            in: header
+            type: string
+            required: true
+            value: "Bearer "
+          - name: user_id
+            in: path
+            type: integer
+            required: false
+        responses:
+          200:
+            description: User details or list of all users
+        """
+        token = request.headers.get('Authorization')
+        if not token:
+            return {"message": "Token is missing"}, 401
+        
+        try:
+            data = jwt.decode(token.split(" ")[1], app.config['SECRET_KEY'], algorithms=["HS256"])
+        except:
+            return {"message": "Invalid token"}, 401
+
+        if user_id is not None:
+            user = User.query.get(user_id)
+            if user:
+                return {
+                    "id": user.id,
+                    "username": user.username,
+                    # Exclude password from response for security reasons
+                }
+            else:
+                return {"message": "User not found"}, 404
+        else:
+            users = User.query.all()
+            users_list = [{
+                "id": user.id,
+                "username": user.username,
+                # Exclude password from response for security reasons
+            } for user in users]
+            return users_list
+
+    
+    def post(self):
+        """
+        Create a new user
+        ---
+        tags:
+        - User
+        parameters:
+          - name: Authorization
+            in: header
+            type: string
+            required: true
+            value: "Bearer "
+          - name: body
+            in: body
+            required: true
+            schema:
+              id: CreateUser
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+        responses:
+          201:
+            description: User created successfully
+        """
+        token = request.headers.get('Authorization')
+        if not token:
+            return {"message": "Token is missing"}, 401
+        
+        try:
+            data = jwt.decode(token.split(" ")[1], app.config['SECRET_KEY'], algorithms=["HS256"])
+        except:
+            return {"message": "Invalid token"}, 401
+
+        data = request.json
+        username = data.get('username')
+        password = data.get('password')
+
+        if not username:
+            return {"message": "Username is required"}, 400
+
+        if not password:
+            return {"message": "Password is required"}, 400
+
+        # Check if the username is already taken
+        existing_user = User.query.filter_by(username=username).first()
+        if existing_user:
+            return {"message": "Username already exists"}, 400
+
+        # Hash the password
+        hashed_password = generate_password_hash(password)
+        new_user = User(username=username, password=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
+
+        return {"message": "User created successfully", "id": new_user.id}, 201
+
+    def put(self, user_id):
+        """
+        Update a user by ID
+        ---
+        tags:
+        - User
+        parameters:
+          - name: Authorization
+            in: header
+            type: string
+            required: true
+            value: "Bearer "
+          - name: user_id
+            in: path
+            type: integer
+            required: true
+          - name: body
+            in: body
+            required: true
+            schema:
+              id: UpdateUser
+              properties:
+                password:
+                  type: string
+        responses:
+          200:
+            description: User updated successfully
+        """
+        token = request.headers.get('Authorization')
+        if not token:
+            return {"message": "Token is missing"}, 401
+        
+        try:
+            data = jwt.decode(token.split(" ")[1], app.config['SECRET_KEY'], algorithms=["HS256"])
+        except:
+            return {"message": "Invalid token"}, 401
+
+        user = User.query.get(user_id)
+        if user:
+            data = request.json
+            password = data.get('password')
+
+            if not password:
+                return {"message": "Password is required"}, 400
+            
+            # Hash the new password
+            hashed_password = generate_password_hash(password)
+            user.password = hashed_password
+            db.session.commit()
+            return {"message": "User password updated successfully", "id": user.id}
+        else:
+            return {"message": "User not found"}, 404
+
+    def delete(self, user_id):
+        """
+        Delete a user by ID
+        ---
+        tags:
+        - User
+        parameters:
+          - name: Authorization
+            in: header
+            type: string
+            required: true
+            value: "Bearer "
+          - name: user_id
+            in: path
+            type: integer
+            required: true
+        responses:
+          200:
+            description: User deleted successfully
+        """
+        token = request.headers.get('Authorization')
+        if not token:
+            return jsonify({"message": "Token is missing"}), 401
+        
+        try:
+            data = jwt.decode(token.split(" ")[1], app.config['SECRET_KEY'], algorithms=["HS256"])
+        except:
+            return jsonify({"message": "Invalid token"}), 401
+
+        user = User.query.get(user_id)
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+            return jsonify({"message": "User deleted successfully", "id": user_id})
+        else:
+            return jsonify({"message": "User not found"}), 404
+
+
 class Auth(Resource):
     def post(self):
         """
@@ -832,6 +1031,7 @@ class PublicResource(Resource):
 api.add_resource(ProgramResource, '/program', '/program/<int:program_id>')
 api.add_resource(SubProgramResource, '/sub-program', '/sub-program/<int:sub_program_id>')
 api.add_resource(ArtikelResource, '/artikel', '/artikel/<int:artikel_id>')
+api.add_resource(UserResource, '/user', '/user/<int:user_id>')
 api.add_resource(Auth, '/auth')
 api.add_resource(PublicResource, '/public/<string:endpoint_name>')
 

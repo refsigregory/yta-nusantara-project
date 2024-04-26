@@ -72,7 +72,7 @@ const AdminLayout = ({ children }) => {
                     />
                     Workshop
                   </a>
-                  <a href="#" className={`group dashboard-link ${isActive('/admin/settings/')}`}>
+                  <a href="/admin/setting" className={`group dashboard-link ${isActive('/admin/settings/')}`}>
                     <img
                       src="/assets/svg/ic-gear.svg"
                       className="transition-all group-hover:filter-white"

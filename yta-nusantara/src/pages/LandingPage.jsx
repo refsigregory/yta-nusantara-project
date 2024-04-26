@@ -16,23 +16,6 @@ const LandingPage = () => {
       easing: 'ease-out'
     });
 
-    // Initialize Flickity for ihtCarousel
-    /* const ihtCarousel = new Flickity('#ihtCarousel-example1', {
-      cellAlign: 'left',
-      contain: true,
-      prevNextButtons: false,
-      wrapAround: false,
-      groupCells: true
-    }); */ 
-    /* const ihtCarousel2 = new Flickity('#ihtCarousel-example2', {
-      cellAlign: 'left',
-      contain: true,
-      prevNextButtons: false,
-      wrapAround: false,
-      groupCells: true
-    });
-    */
-
     // Initialize Flickity for bnnGallery
     const bnnGallery = new Flickity('#bnnGallery', {
       cellAlign: 'left',
@@ -44,8 +27,6 @@ const LandingPage = () => {
 
     // Cleanup on component unmount
     return () => {
-      // ihtCarousel.destroy();
-      // ihtCarousel2.destroy();
       bnnGallery.destroy();
     };
   }, []);
