@@ -240,7 +240,7 @@ class ProgramResource(Resource):
           if gambar_file and allowed_file(gambar_file.filename):
               gambar_filename = f"{slugify(program.nama)}_{datetime.utcnow().strftime('%Y%m%d%H%M%S')}.jpg"
               gambar_data = gambar_file
-              size = os.fstat(file.fileno()).st_size
+              size = os.fstat(gambar_file.fileno()).st_size
               upload_object(gambar_filename, gambar_data, size)
               program.gambar = gambar_filename
 
@@ -320,26 +320,24 @@ class SubProgramResource(Resource):
         if sub_program_id is not None:
             sub_program = SubProgram.query.get(sub_program_id)
 
-            gambar_url = f"{os.getenv('APP_BASE_URL')}/files/{sub_program.gambar}"
             if sub_program:
                 return {
                   "id": sub_program.id,
                   "nama": sub_program.nama,
                   "deskripsi": sub_program.deskripsi,
                   "program_id": sub_program.program_id,
-                  "gambar": gambar_url
+                  "gambar": f"{os.getenv('APP_BASE_URL')}/files/{sub_program.gambar}"
                   }
             else:
                 return {"message": "SubProgram not found"}, 404
         else:
             sub_programs = SubProgram.query.all()
-            gambar_url = f"{os.getenv('APP_BASE_URL')}/files/{sub_program.gambar}"
             sub_programs_list = [{
               "id": sub_program.id,
               "nama": sub_program.nama,
               "deskripsi": sub_program.deskripsi,
               "program_id": sub_program.program_id,
-              "gambar": gambar_url
+              "gambar": f"{os.getenv('APP_BASE_URL')}/files/{sub_program.gambar}"
             } for sub_program in sub_programs]
             return sub_programs_list
 
@@ -455,9 +453,9 @@ class SubProgramResource(Resource):
 
             gambar_file = request.files.get('gambar')
             if gambar_file and allowed_file(gambar_file.filename):
-                gambar_filename = f"{program.nama}_{datetime.utcnow().strftime('%Y%m%d%H%M%S')}.jpg"
+                gambar_filename = f"{sub_program.nama}_{datetime.utcnow().strftime('%Y%m%d%H%M%S')}.jpg"
                 gambar_data = gambar_file
-                size = os.fstat(file.fileno()).st_size
+                size = os.fstat(gambar_file.fileno()).st_size
                 upload_object(gambar_filename, gambar_data, size)
                 sub_program.gambar = gambar_filename
 
@@ -669,7 +667,7 @@ class ArtikelResource(Resource):
             if gambar_file and allowed_file(gambar_file.filename):
                 gambar_filename = f"{slugify(artikel.judul)}_{datetime.utcnow().strftime('%Y%m%d%H%M%S')}.jpg"
                 gambar_data = gambar_file
-                size = os.fstat(file.fileno()).st_size
+                size = os.fstat(gambar_file.fileno()).st_size
                 upload_object(gambar_filename, gambar_data, size)
                 artikel.gambar = gambar_filename
 
@@ -755,10 +753,87 @@ class Auth(Resource):
 
         return {"success": True, "token": token}
 
+class PublicResource(Resource):
+    
+    def get_program_navbar(self):
+        programs = Program.query.all()
+        navbar_data = []
+
+        for program in programs:
+            sub_programs = SubProgram.query.filter_by(program_id=program.id).all()
+            sub_program_names = [sub.nama for sub in sub_programs]
+
+            program_data = {
+                "id": program.id,
+                "name": program.nama,
+                "sub_programs": sub_program_names,
+            }
+            navbar_data.append(program_data)
+
+        # Return the navbar data as the API response
+        return navbar_data
+    
+    def get_program_list(self):
+      # Fetch program list data
+      programs = Program.query.all()
+      program_list_data = []
+
+      for program in programs:
+          sub_programs = SubProgram.query.filter_by(program_id=program.id).all()
+          sub_program_data = []
+
+          for sub_program in sub_programs:
+              sub_program_data.append({
+                  "id": sub_program.id,
+                  "nama": sub_program.nama,
+                  "deskripsi": sub_program.deskripsi,
+                  "tanggal": sub_program.tanggal.strftime('%Y-%m-%d %H:%M:%S'),
+                  "gambar": f"{os.getenv('APP_BASE_URL')}/files/{sub_program.gambar}",
+              })
+
+          program_data = {
+              "id": program.id,
+              "nama": program.nama,
+              "deskripsi": program.deskripsi,
+              "tanggal": program.tanggal.strftime('%Y-%m-%d %H:%M:%S'),
+              "gambar": f"{os.getenv('APP_BASE_URL')}/files/{program.gambar}",
+              "sub_programs": sub_program_data,
+          }
+          program_list_data.append(program_data)
+
+      # Return the program list data as the API response
+      return program_list_data
+    
+    def get_article(self):
+        # New 'get_article' method logic for '/public/article'
+        # Fetch article data (assuming it's a list of article details)
+        articles = Artikel.query.all()  # Replace 'Artikel' with the actual model class
+        articles_list = [{
+            "id": article.id,
+            "title": article.judul,  # Assuming 'judul' is the title field for Artikel
+            "content": article.konten,  # Assuming 'konten' is the content field for Artikel
+            "date": article.tanggal.strftime('%Y-%m-%d %H:%M:%S'),
+            "image": f"{os.getenv('APP_BASE_URL')}/files/{article.gambar}"  # Adjust the path as needed
+        } for article in articles]
+        
+        # Return the article data as the API response
+        return articles_list
+
+    def get(self, endpoint_name):
+        if endpoint_name == 'program_navbar':
+            return self.get_program_navbar()
+        elif endpoint_name == 'program_list':
+            return self.get_program_list()
+        elif endpoint_name == 'article':
+            return self.get_article()
+        else:
+            return {"message": "Invalid endpoint"}, 404
+
 api.add_resource(ProgramResource, '/program', '/program/<int:program_id>')
 api.add_resource(SubProgramResource, '/sub-program', '/sub-program/<int:sub_program_id>')
 api.add_resource(ArtikelResource, '/artikel', '/artikel/<int:artikel_id>')
 api.add_resource(Auth, '/auth')
+api.add_resource(PublicResource, '/public/<string:endpoint_name>')
 
 ## Controller
 @app.route('/files/<name>', methods=['GET'])

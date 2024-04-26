@@ -1,16 +1,20 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect, useRef } from 'react';
+import { baseUrl } from '../config/app';
+import stringToSlug from '../utils/slug';
 
 const Navbar = () => {
   // State to manage dropdown visibility
   const [dropdownOneOpen, setDropdownOneOpen] = useState(false);
   const [dropdownTwoOpen, setDropdownTwoOpen] = useState(false);
+  const [programs, setPrograms] = useState([]);
 
   const toggleDropdownOne = () => {
     setDropdownOneOpen(!dropdownOneOpen);
     setDropdownTwoOpen(false); // Close nested dropdown when main dropdown opens
   };
 
+  // eslint-disable-next-line no-unused-vars
   const toggleDropdownTwo = () => {
     setDropdownTwoOpen(!dropdownTwoOpen);
   };
@@ -36,26 +40,13 @@ const Navbar = () => {
     };
   }, []);
 
-  // Array of navigation items
-  const programs = [
-    {
-      id: 1,
-      name: 'In House Training',
-      sub_programs: [
-        'Public Speaking & Leadership',
-        'Management & Computer',
-        'Marketing & Distribution',
-        'Komunikasi Publik & Kepemimpinan',
-        'Manajemen & Komputer',
-        'Pemasaran & Distribusi',
-      ],
-    },
-    {
-      id: 2,
-      name: 'Corporate Social Responsibility',
-      sub_programs: [],
-    },
-  ];
+  useEffect(() => {
+    // Fetch programs data from API
+    fetch(`${baseUrl}/public/program_navbar`)
+      .then(response => response.json())
+      .then(data => setPrograms(data))
+      .catch(error => console.error('Error fetching programs:', error));
+  }, []);
 
   const navItems = [
     {
@@ -65,6 +56,7 @@ const Navbar = () => {
       dropdownContent: programs,
     },
   ];
+
 
   return (
     <nav className="container my-4" ref={navbarRef}>
@@ -110,13 +102,13 @@ const Navbar = () => {
               {navItems.map((item, index) => (
                 <NavItem key={index} {...item} />
               ))}
-              <div className="lg:ml-auto">
-                <a href="tel:+6285398520322" className="btn-primary">
-                  Hubungi Kami
-                </a>
-              </div>
             </div>
           </div>
+        </div>
+        <div className="lg:ml-auto">
+          <a href="tel:+6285398520322" className="btn-primary">
+            Hubungi Kami
+          </a>
         </div>
       </div>
     </nav>
@@ -135,7 +127,7 @@ const NavItem = ({ label, onClick, dropdownOpen, dropdownContent }) => (
     </button>
     {/* Dropdown menu */}
     {dropdownOpen && (
-      <div className="z-10 bg-white divide-y divide-gray-100 rounded-lg box-shadow">
+      <div className="absolute z-10 top-10 bg-white divide-y divide-gray-100 rounded-lg box-shadow">
         <ul className="py-2 text-sm text-dark-1 font-medium md:whitespace-nowrap">
           {dropdownContent.map((program) => (
             <li key={program.id}>
@@ -148,6 +140,7 @@ const NavItem = ({ label, onClick, dropdownOpen, dropdownContent }) => (
   </div>
 );
 
+// eslint-disable-next-line no-unused-vars
 const NestedNavItem = ({ id, name, sub_programs }) => {
   const [nestedDropdownOpen, setNestedDropdownOpen] = useState(false);
 
@@ -157,10 +150,10 @@ const NestedNavItem = ({ id, name, sub_programs }) => {
 
   return (
     <div>
-      <button
+      <div
         className="flex items-center justify-between w-full px-4 py-2 hover:bg-gray-100"
       >
-        {name}
+        <a href={`#program-${stringToSlug(name)}`}>{name}</a>
         {
             nestedDropdownOpen ?
               <img
@@ -176,13 +169,13 @@ const NestedNavItem = ({ id, name, sub_programs }) => {
                     className="-rotate-90"
                     alt="" />
           }
-      </button>
+      </div>
       {nestedDropdownOpen && sub_programs.length > 0 && (
-        <div className="z-10 bg-white divide-y divide-gray-100 rounded-lg box-shadow w-[320px] md:w-auto">
+        <div className="absolute z-10 bg-white divide-y divide-gray-100 rounded-lg box-shadow w-[320px] md:w-auto">
           <ul className="py-2 text-sm text-dark-1 font-medium md:whitespace-nowrap grid grid-rows-3 grid-flow-col gap-2">
             {sub_programs.map((subProgram, index) => (
               <li key={index}>
-                <a href="#" className="block px-4 py-2 hover:bg-gray-100">
+                <a href={`#subprogram-${stringToSlug(subProgram)}`} className="block px-4 py-2 hover:bg-gray-100">
                   {subProgram}
                 </a>
               </li>
