@@ -2,7 +2,7 @@
 Backend:
 - Docker
 - Python + Flask
-- MySQL
+- MySQL (Database)
 - MinIO (Object Storage)
 
 Frontend:
