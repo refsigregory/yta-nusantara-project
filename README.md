@@ -53,3 +53,5 @@ Password: `admin`
 - [ ] Modal Pop-Up (for sub program & article/workshops))
 - [ ] Pagination for workshop
 - [ ] SortBy date descending Workshop Dashboard Admin
+- [ ] Make Mobile UX works
+- [ ] Error handling in dashboard Admin
