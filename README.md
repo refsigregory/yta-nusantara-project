@@ -34,3 +34,9 @@ or
 `npm install`
 
 `npm run dev`
+
+## Docs
+### User:
+
+Username: `admin`
+Password: `admin`
