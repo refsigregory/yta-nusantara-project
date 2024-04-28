@@ -20,6 +20,14 @@ Linux/Mac:
 
 `bash ./run.sh`
 
+Windows:
+
+`docker-compose up`
+
+or
+
+`docker-compose up --build`
+
 ### Frontend
 `cd yta-nusantara`
 
