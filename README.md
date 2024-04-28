@@ -43,3 +43,7 @@ or
 Username: `admin`
 
 Password: `admin`
+
+### API Documentation
+
+`[http://localhost:3001/apidocs/](http://localhost:3000/apidocs/)
