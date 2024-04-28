@@ -36,7 +36,10 @@ or
 `npm run dev`
 
 ## Docs
-### User:
+### Login Dashboard
+
+`http://localhost:5173/admin`
 
 Username: `admin`
+
 Password: `admin`
