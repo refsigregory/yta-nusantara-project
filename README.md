@@ -49,9 +49,9 @@ Password: `admin`
 [http://localhost:3001/apidocs/](http://localhost:3000/apidocs/)
 
 ## ToDo
-- [ ] Improve UX Navigation Program
+- [*] Improve UX Navigation Program
 - [ ] Modal Pop-Up (for sub program & article/workshops))
 - [ ] Pagination for workshop
-- [ ] SortBy date descending Workshop Dashboard Admin
+- [*] SortBy date descending Workshop Dashboard Admin
 - [ ] Make Mobile UX works
 - [ ] Error handling in dashboard Admin

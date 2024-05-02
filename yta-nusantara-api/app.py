@@ -546,7 +546,7 @@ class ArtikelResource(Resource):
             else:
                 return {"message": "Artikel not found"}, 404
         else:
-            artikels = Artikel.query.all()
+            artikels = Artikel.query.order_by(Artikel.tanggal.desc()).all()
             artikels_list = [{
                 "id": artikel.id, 
                 "judul": artikel.judul,

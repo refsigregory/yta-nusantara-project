@@ -152,20 +152,19 @@ const NestedNavItem = ({ id, name, sub_programs }) => {
     <div>
       <div
         className="flex items-center justify-between w-full px-4 py-2 hover:bg-gray-100"
+        onClick={toggleNestedDropdown}
       >
         <a href={`#program-${stringToSlug(name)}`}>{name}</a>
         {
             nestedDropdownOpen ?
               <img
                 src="/assets/svg/ic-chevron.svg"
-                onClick={toggleNestedDropdown}
                 className="-rotate-120"
                 alt="" />
                 :
                 sub_programs.length > 0 &&
                   <img
                     src="/assets/svg/ic-chevron.svg"
-                    onClick={toggleNestedDropdown}
                     className="-rotate-90"
                     alt="" />
           }
