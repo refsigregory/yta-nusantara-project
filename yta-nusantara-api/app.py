@@ -1003,20 +1003,27 @@ class PublicResource(Resource):
       # Return the program list data as the API response
       return program_list_data
     
-    def get_article(self):
-        # New 'get_article' method logic for '/public/article'
-        # Fetch article data (assuming it's a list of article details)
-        articles = Artikel.query.all()  # Replace 'Artikel' with the actual model class
-        articles_list = [{
-            "id": article.id,
-            "title": article.judul,  # Assuming 'judul' is the title field for Artikel
-            "content": article.konten,  # Assuming 'konten' is the content field for Artikel
-            "date": article.tanggal.strftime('%Y-%m-%d %H:%M:%S'),
-            "image": f"{os.getenv('APP_BASE_URL')}/files/{article.gambar}"  # Adjust the path as needed
-        } for article in articles]
-        
-        # Return the article data as the API response
-        return articles_list
+    def get_article(self, page=1, per_page=10):
+      # Calculate the offset based on the page number and items per page
+      offset = (page - 1) * per_page
+      
+      # Fetch article data (assuming it's a list of article details)
+      articles = Artikel.query.offset(offset).limit(per_page).all()
+      
+      articles_list = [{
+          "id": article.id,
+          "title": article.judul,  # Assuming 'judul' is the title field for Artikel
+          "content": article.konten,  # Assuming 'konten' is the content field for Artikel
+          "date": article.tanggal.strftime('%Y-%m-%d %H:%M:%S'),
+          "image": f"{os.getenv('APP_BASE_URL')}/files/{article.gambar}"  # Adjust the path as needed
+      } for article in articles]
+      
+      # Return the article data and pagination information as the API response
+      return {
+          "articles": articles_list,
+          "page": page,
+          "total_articles": len(articles)  # This gives the total articles fetched for this page
+      }
 
     def get(self, endpoint_name):
         if endpoint_name == 'program_navbar':
@@ -1024,9 +1031,13 @@ class PublicResource(Resource):
         elif endpoint_name == 'program_list':
             return self.get_program_list()
         elif endpoint_name == 'article':
-            return self.get_article()
+            # Extract query parameters for pagination
+            page = request.args.get('page', default=1, type=int)
+            per_page = request.args.get('per_page', default=4, type=int)
+            return self.get_article(page=page, per_page=per_page)
         else:
             return {"message": "Invalid endpoint"}, 404
+
 
 api.add_resource(ProgramResource, '/program', '/program/<int:program_id>')
 api.add_resource(SubProgramResource, '/sub-program', '/sub-program/<int:sub_program_id>')

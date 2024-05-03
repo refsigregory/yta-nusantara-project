@@ -13,7 +13,7 @@ const ArticleList = () => {
           throw new Error('Failed to fetch articles');
         }
         const data = await response.json();
-        setArticles(data);
+        setArticles(data.articles);
       } catch (error) {
         console.error('Error fetching articles:', error);
       }
