@@ -6,6 +6,7 @@ import 'flickity/css/flickity.css';
 import Navbar from '../components/Navbar';
 import ProgramList from '../components/ProgramList';
 import ArticleList from '../components/ArticleList';
+import Footer from '../components/Footer';
 
 const LandingPage = () => {
   useEffect(() => {
@@ -56,7 +57,7 @@ const LandingPage = () => {
               Yayasan <br className="hidden md:block" />
               Tunas Agung Nusantara
             </p>
-            <p className="text-base md:text-lg font-medium text-dark-1 leading-7">
+            <p className="text-base font-medium leading-7 md:text-lg text-dark-1">
               Pandemi covid-19 telah meninggalkan tantangan yang besar bagi
               dunia pendidikan, instansi pemerintah, dunia perbankan, serta
               sektor lainnya. Diperlukan suatu tekad dan perjuangan yang tidak
@@ -70,7 +71,7 @@ const LandingPage = () => {
           </div>
         </div>
         <div
-          className="lg:col-span-5 hidden md:block"
+          className="hidden lg:col-span-5 md:block"
           data-aos="fade-left"
           data-aos-delay={300}
         >
@@ -90,7 +91,7 @@ const LandingPage = () => {
         />
       </div>
       <div className="max-w-[660px] w-full">
-        <p className="text-dark-2 text-xl md:text-2xl mb-5 font-bold">
+        <p className="mb-5 text-xl font-bold text-dark-2 md:text-2xl">
           Two Days Training - Badan Narkotika Nasional
         </p>
         <div id="bnnGallery">
@@ -118,7 +119,7 @@ const LandingPage = () => {
     <div className="container">
       <div className="w-full">
         <div className="flex flex-col items-center justify-center">
-          <p className="text-xl text-orange font-semibold mb-5">Our Services</p>
+          <p className="mb-5 text-xl font-semibold text-orange">Our Services</p>
           {/* <p className="text-[36px] md:text-[48px] font-bold md:leading-[64px] text-dark-2 text-center">
             Dokumentasi In House Training
           </p> */}
@@ -132,86 +133,7 @@ const LandingPage = () => {
   <ArticleList />
 
   {/* Footer */}
-  <footer className="py-[50px] px-4 lg:px-20 bg-secondary">
-    <div className="flex flex-wrap lg:grid lg:grid-cols-12 md:gap-20 gap-10">
-      <div className="lg:col-span-3">
-        <a href="/">
-          <img
-            src="/assets/svg/logo-bg-1.svg"
-            className="h-full max-h-12 md:max-h-[80px]"
-            alt=""
-          />
-        </a>
-        <p className="mt-5 text-dark-2 text-sm leading-6 font-medium italic">
-          “Seorang pemimpin adalah mereka yang telah terlebih dahulu taat”
-        </p>
-      </div>
-      <div className="lg:col-span-3">
-        <p className="text-dark-2 text-sm leading-5 mb-4 font-extrabold">
-          Program
-        </p>
-        <div className="flex flex-col gap-3">
-          <a href="#" className="text-sm text-dark-3 leading-6 hover:underline">
-            Public Speaking &amp; Leadership
-          </a>
-          <a href="#" className="text-sm text-dark-3 leading-6 hover:underline">
-            Management &amp; Computer
-          </a>
-          <a href="#" className="text-sm text-dark-3 leading-6 hover:underline">
-            Marketing &amp; Distribution
-          </a>
-          <a href="#" className="text-sm text-dark-3 leading-6 hover:underline">
-            Corporate Social Responsibility
-          </a>
-        </div>
-      </div>
-      <div className="lg:col-span-6">
-        <div className="flex items-start gap-3 md:gap-5">
-          <div className="flex flex-col items-center gap-2">
-            <img
-              src="/assets/images/tersy-maria.png"
-              className="w-16 md:w-[100px] h-16 md:h-[100px] shadow-sm rounded-full"
-              alt=""
-            />
-            <p className="text-xs md:text-sm text-dark-3 text-center font-medium md:tracking-wide">
-              Tersy Maria <br />
-              <i>Founder YTA Nusantara</i>
-            </p>
-          </div>
-          <div>
-            <p className="text-dark-2 text-sm leading-5 mb-4 font-extrabold">
-              Contact
-            </p>
-            <div className="flex flex-col gap-3">
-              <a
-                href="#"
-                className="text-sm text-dark-3 leading-6 hover:underline inline-flex items-start gap-2"
-              >
-                <img src="/assets/svg/ic-location.svg" alt="" />
-                Jl. Tondano - Tomohon (Rurukan), <br />
-                Kompleks Perum Citra Asri Blok - D 2 <br />
-                Sasaran - Minahasa , Sulawesi Utara
-              </a>
-              <a
-                href="tel:+6285398520322"
-                className="text-sm text-dark-3 leading-6 hover:underline inline-flex items-start gap-2"
-              >
-                <img src="/assets/svg/ic-phone.svg" alt="" />
-                +62 85398520322
-              </a>
-              <a
-                href="mailto:tercy.maria@gmail.com"
-                className="text-sm text-dark-3 leading-6 hover:underline inline-flex items-start gap-2"
-              >
-                <img src="/assets/svg/ic-envelope.svg" alt="" />
-                tercy.maria@gmail.com
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </footer>
+  <Footer/>
 </>
 
     );

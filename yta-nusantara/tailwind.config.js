@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./**/*.{html,js,py}"],
+  content: ["./**/*.{html,js,py}", "./node_modules/flowbite/**/*.js"],
   theme: {
     fontFamily: {
       'primary': "'Kumbh Sans', sans-serif"
@@ -26,6 +26,8 @@ export default {
       }
     }
   },
-  plugins: [],
+  plugins: [
+    require('flowbite/plugin')
+  ],
 }
 
