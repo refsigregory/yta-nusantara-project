@@ -22,24 +22,6 @@ const ArticleList = () => {
     };
 
     fetchArticles();
-
-    // const dummy = [
-    //   {
-    //     id: 1,
-    //     image: 'https://picsum.photos/536/354',
-    //     title: 'Test title',
-    //     date: 'date 123',
-    //     content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-    //   },
-    //   {
-    //     id: 2,
-    //     image: 'https://picsum.photos/536/354',
-    //     title: 'Test title 2',
-    //     date: 'date 123',
-    //     content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-    //   },
-    // ];
-    // setArticles(dummy);
   }, []);
 
   // Function to format date into Indonesian format
@@ -51,7 +33,7 @@ const ArticleList = () => {
 
   const previewContent = (el) => {
     setPreview(el)
-    console.log(el);
+    // console.log(el);
   }
 
   return (
@@ -89,7 +71,7 @@ const ArticleList = () => {
                     </div>
                   </div>
                   <div className="md:mt-5">
-                    <a href={`#article-${stringToSlug(article.title)}`} onClick={() => previewContent(article)} data-modal-target="static-modal" data-modal-toggle="static-modal" className="min-h-[90px] text-base md:text-2xl text-dark-2 font-semibold md:leading-[30px] hover:underline focus:underline">
+                    <a href={`#article-${stringToSlug(article.title)}`} onClick={() => previewContent(article)} data-modal-target="ArticleModal" data-modal-toggle="ArticleModal" className="min-h-[90px] text-base md:text-2xl text-dark-2 font-semibold md:leading-[30px] hover:underline focus:underline">
                       {article.title}
                     </a>
                     <p className="mt-3 text-sm md:text-lg text-dark-1 md:leading-[30px] line-clamp-4 md:line-clamp-3">
@@ -104,7 +86,7 @@ const ArticleList = () => {
       </section>
 
       {
-        preview && <ArticlePreview id='ArticleModal' data={preview} />
+        preview && <ArticlePreview id='ArticleModal' title={preview.title} image={preview.image} content={preview.content} date={preview.date} />
       }
     </>
   );

@@ -5,9 +5,11 @@ import Flickity from 'flickity';
 import 'flickity/css/flickity.css';
 import { baseUrl } from '../config/app';
 import stringToSlug from '../utils/slug';
+import ArticlePreview from './ArticlePreview';
 
 const ProgramList = () => {
   const [programList, setProgramList] = useState([]);
+  const [preview, setPreview] = useState([]);
   
   useEffect(() => {
     // Initialize AOS
@@ -40,6 +42,11 @@ const ProgramList = () => {
     fetchProgramList();
   }, []);
 
+  const previewContent = (el) => {
+    setPreview(el)
+    // console.log(el);
+  }
+
   // eslint-disable-next-line react/prop-types
   function Carousel({ title = "default", data = [] }) {
     useEffect(() => {
@@ -57,19 +64,19 @@ const ProgramList = () => {
 
     return (
       data.length > 0 && (
-        <div id={`ihtCarousel-${title}`} className="ml-4 md:ml-[50px]">
+        <div id={`ihtCarousel-${title}`}>
           {data.map((item, index) => (
-            <div key={index} id={`subprogram-${stringToSlug(item.nama)}`} className="rounded-2xl w-[345px] lg:w- h-[275px] relative bg-gradient overflow-hidden mr-[30px]">
+            <div key={index} id={`subprogram-${stringToSlug(item.nama)}`} className="rounded-2xl !w-full sm:!w-[345px] h-[275px] relative bg-gradient overflow-hidden mr-4 md:mr-[30px]">
               <div className="absolute px-[10px] py-[6px] bg-primary text-white rounded-full top-4 right-4 font-semibold text-xs">
                 {item.nama}
               </div>
               <div className="absolute bottom-[30px] left-4 z-10 right-4">
-                <p className="line-clamp-3 text-sm text-light leading-[22px]">
+                <p onClick={() => previewContent(item)} data-modal-target="SubProgramModal" data-modal-toggle="SubProgramModal" className="line-clamp-3 text-sm text-light leading-[22px] cursor-pointer">
                   {item.deskripsi}
                 </p>
               </div>
-              <img src={item.gambar} className="h-full w-full" alt="" />
-              <div className="absolute top-0 bg-gradient inset-0" />
+              <img src={item.gambar} className="w-full h-full" alt="" />
+              <div className="absolute inset-0 top-0 bg-gradient" />
             </div>
           ))}
         </div>
@@ -81,18 +88,18 @@ const ProgramList = () => {
     <>
       {programList.map((program, index) => (
         <section key={index} id={`program-${stringToSlug(program.nama)}`} className="relative py-[50px] px-4 max-w-screen-xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between lg:px-[50px] items-center gap-[50px] my-10 lg:my-0">
+          <div className="flex flex-col md:flex-row justify-between lg:px-[50px] items-center gap-4 md:gap-[50px] my-10">
             <div key={program.id} className="max-w-[660px] w-full">
-              <div className="flex flex-col relative pt-14 md:pt-0">
+              <div className="relative flex flex-col pt-14 md:pt-0">
                 <img
                   src="/assets/svg/wavy-ornament.svg"
-                  className="absolute top-6 right-0"
+                  className="absolute right-0 top-6"
                   alt=""
                 />
                 <p className="text-[36px] md:text-[48px] font-bold md:leading-[64px] text-dark-2">
                   {program.nama}
                 </p>
-                <p className="text-lg text-dark-1 leading-8 font-normal mt-4 mb-10">
+                <p className="mt-4 text-base font-normal leading-8 sm:text-lg text-dark-1">
                   {program.deskripsi}
                 </p>
               </div>
@@ -101,7 +108,7 @@ const ProgramList = () => {
             <div className="max-w-[647px] w-full">
               <img
                 src={program.gambar}
-                className="w-full"
+                className="w-full rounded-2xl"
                 alt=""
               />
             </div>
@@ -110,6 +117,11 @@ const ProgramList = () => {
           <Carousel title={`subprogram-${index}`} data={program.sub_programs} />
         </section>
       ))}
+
+      {
+        preview &&
+          <ArticlePreview id='SubProgramModal' image={preview.gambar} date={preview.tanggal} content={preview.deskripsi} title={preview.nama}/>
+      }
     </>
   );
 };
