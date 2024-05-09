@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./**/*.{html,js,py}", "./node_modules/flowbite/**/*.js"],
+  content: ["./**/*.{html,js,py}", 'node_modules/flowbite-react/lib/esm/**/*.js'],
   theme: {
     fontFamily: {
       'primary': "'Kumbh Sans', sans-serif"

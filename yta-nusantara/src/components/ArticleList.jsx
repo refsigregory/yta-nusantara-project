@@ -6,6 +6,7 @@ import ArticlePreview from './ArticlePreview';
 const ArticleList = () => {
   const [articles, setArticles] = useState([]);
   const [preview, setPreview] = useState([]);
+  const [openModal, setOpenModal] = useState(false); 
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -33,7 +34,13 @@ const ArticleList = () => {
 
   const previewContent = (el) => {
     setPreview(el)
+    setOpenModal(!openModal)
     // console.log(el);
+  }
+
+  const handleOpenModal = (state) => {
+    // console.log(state);
+    setOpenModal(state)
   }
 
   return (
@@ -86,7 +93,7 @@ const ArticleList = () => {
       </section>
 
       {
-        preview && <ArticlePreview id='ArticleModal' title={preview.title} image={preview.image} content={preview.content} date={preview.date} />
+        preview && <ArticlePreview id='ArticleModal' title={preview.title} image={preview.image} content={preview.content} date={preview.date} setOpenModal={handleOpenModal} isOpen={openModal} />
       }
     </>
   );

@@ -10,6 +10,7 @@ import ArticlePreview from './ArticlePreview';
 const ProgramList = () => {
   const [programList, setProgramList] = useState([]);
   const [preview, setPreview] = useState([]);
+  const [openModal, setOpenModal] = useState(false); 
   
   useEffect(() => {
     // Initialize AOS
@@ -44,7 +45,13 @@ const ProgramList = () => {
 
   const previewContent = (el) => {
     setPreview(el)
+    setOpenModal(!openModal)
     // console.log(el);
+  }
+
+  const handleOpenModal = (state) => {
+    // console.log(state);
+    setOpenModal(state)
   }
 
   // eslint-disable-next-line react/prop-types
@@ -66,14 +73,14 @@ const ProgramList = () => {
       data.length > 0 && (
         <div id={`ihtCarousel-${title}`}>
           {data.map((item, index) => (
-            <div key={index} id={`subprogram-${stringToSlug(item.nama)}`} className="rounded-2xl !w-full sm:!w-[345px] h-[275px] relative bg-gradient overflow-hidden mr-4 md:mr-[30px]">
+            <div key={index} id={`subprogram-${stringToSlug(item.nama)}`} className="rounded-2xl h-[275px] relative bg-gradient overflow-hidden mr-4 md:mr-[30px]" style={{ width: '320px' }}>
               <div className="absolute px-[10px] py-[6px] bg-primary text-white rounded-full top-4 right-4 font-semibold text-xs">
                 {item.nama}
               </div>
               <div className="absolute bottom-[30px] left-4 z-10 right-4">
-                <p onClick={() => previewContent(item)} data-modal-target="SubProgramModal" data-modal-toggle="SubProgramModal" className="line-clamp-3 text-sm text-light leading-[22px] cursor-pointer">
+                <a href={`#subprogram-${stringToSlug(item.nama)}`} onClick={() => previewContent(item)} data-modal-target="SubProgramModal" data-modal-toggle="SubProgramModal" className="line-clamp-3 text-sm text-light leading-[22px] cursor-pointer">
                   {item.deskripsi}
-                </p>
+                </a>
               </div>
               <img src={item.gambar} className="w-full h-full" alt="" />
               <div className="absolute inset-0 top-0 bg-gradient" />
@@ -120,7 +127,7 @@ const ProgramList = () => {
 
       {
         preview &&
-          <ArticlePreview id='SubProgramModal' image={preview.gambar} date={preview.tanggal} content={preview.deskripsi} title={preview.nama}/>
+          <ArticlePreview id='SubProgramModal' image={preview.gambar} date={preview.tanggal} content={preview.deskripsi} title={preview.nama} setOpenModal={handleOpenModal} isOpen={openModal} />
       }
     </>
   );
