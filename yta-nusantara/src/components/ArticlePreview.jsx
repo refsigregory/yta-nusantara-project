@@ -5,7 +5,7 @@ export default function ArticlePreview({ image, date, content, title, id = "defa
 		<Modal show={isOpen} onClose={() => setOpenModal(false)}>
 			<Modal.Header>{title}</Modal.Header>
 			<Modal.Body>
-				<div className="p-4 space-y-4 md:p-5">
+				<div className="space-y-4">
 					<img src={image} className="w-full h-auto mx-auto rounded-xl" alt={title} />
 					<div className="mt-5">
 						<p className="mb-3 text-sm italic text-right text-gray-400 sm:text-base">{date}</p>
