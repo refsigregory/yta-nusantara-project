@@ -11,6 +11,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy.exc import IntegrityError
 import os
 import requests
+import math
 from slugify import slugify
 
 ## APP Init
@@ -1009,6 +1010,14 @@ class PublicResource(Resource):
       
       # Fetch article data (assuming it's a list of article details)
       articles = Artikel.query.offset(offset).limit(per_page).all()
+
+    
+      # Get the total number of articles
+      all_articles = Artikel.query.all()
+      total_articles = len(all_articles)
+    
+      # Calculate the total pages
+      total_pages = math.ceil(total_articles / per_page)
       
       articles_list = [{
           "id": article.id,
@@ -1022,7 +1031,8 @@ class PublicResource(Resource):
       return {
           "articles": articles_list,
           "page": page,
-          "total_articles": len(articles)  # This gives the total articles fetched for this page
+          "total_articles": len(articles),  # This gives the total articles fetched for this page
+          "total_pages": total_pages
       }
 
     def get(self, endpoint_name):

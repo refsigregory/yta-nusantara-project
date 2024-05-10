@@ -2,28 +2,39 @@ import { useState, useEffect } from 'react';
 import { baseUrl } from '../config/app';
 import stringToSlug from '../utils/slug';
 import ArticlePreview from './ArticlePreview';
+import { Pagination } from 'flowbite-react';
 
 const ArticleList = () => {
+  const [isLoading, setLoading] = useState(true);
   const [articles, setArticles] = useState([]);
   const [preview, setPreview] = useState([]);
   const [openModal, setOpenModal] = useState(false); 
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(0);
+  const onPageChange = (page) => setCurrentPage(page);
+
+
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await fetch(`${baseUrl}/public/article`);
+        const response = await fetch(`${baseUrl}/public/article?page=${currentPage}`);
         if (!response.ok) {
           throw new Error('Failed to fetch articles');
         }
         const data = await response.json();
         setArticles(data.articles);
+
+        setTotalPage(data.total_pages);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching articles:', error);
+        setLoading(false);
       }
     };
 
     fetchArticles();
-  }, []);
+  }, [currentPage]);
 
   // Function to format date into Indonesian format
   const formatDate = (dateString) => {
@@ -88,6 +99,12 @@ const ArticleList = () => {
                 </div>
               ))}
             </div>
+          </div>
+          <div className="flex overflow-x-auto sm:justify-center">
+            {
+              !isLoading &&
+              <Pagination currentPage={currentPage} totalPages={totalPage} onPageChange={onPageChange} />
+            }
           </div>
         </div>
       </section>
