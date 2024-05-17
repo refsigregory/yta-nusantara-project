@@ -10,7 +10,9 @@ Frontend:
 
 ## Installation
 ### Frontend
-`cd yta-nusantara-api`
+`cd yta-nusantara`
+
+- Manual
 
 `npm install`
 
