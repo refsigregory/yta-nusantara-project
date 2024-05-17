@@ -1,0 +1,7 @@
+version: "3.7"
+
+services:
+  yta-web-app:
+    build: .
+    ports:
+      - "8084:4173" 
