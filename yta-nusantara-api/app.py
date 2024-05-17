@@ -16,7 +16,7 @@ from slugify import slugify
 
 ## APP Init
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:5173"])
+CORS(app, origins=["https://yta-nusantara.srv1.ref.si"])
 api = Api(app)
 swagger = Swagger(app)
 db = SQLAlchemy()

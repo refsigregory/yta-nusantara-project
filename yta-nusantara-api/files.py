@@ -7,6 +7,8 @@ ALLOWED_EXTENSIONS = {"txt", "pdf", "png", "jpg", "jpeg", "gif"}
 ACCESS_KEY = os.environ.get("MINIO_ROOT_USER")
 SECRET_KEY = os.environ.get("MINIO_ROOT_PASSWORD")
 BUCKET_NAME = os.environ.get("MINIO_BUCKET")
+SECRET_KEY = os.environ.get("MINIO_ROOT_PASSWORD")
+MINIO_SECURE = os.environ.get("MINIO_SECURE")
 MINIO_API_HOST = f"{os.environ.get('MINIO_HOSTNAME')}:{os.environ.get('MINIO_SERVER_PORT')}" # os.environ.get("MINIO_ENDPOINT")
 
 def upload_object(filename, data, length):
