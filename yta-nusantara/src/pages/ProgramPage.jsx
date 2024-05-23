@@ -88,8 +88,11 @@ function ProgramPage() {
                 <table className="w-full" id="tableProductsUp">
                   <thead className="border-b border-b-slate-200 bg-slate-100">
                     <tr>
-                      <th width="80%" className="py-4 pl-4 last:pl-0">
+                      <th width="60%" className="py-4 pl-4 last:pl-0">
                         Nama Program
+                      </th>
+                      <th width="30%" className="py-4 pl-4 last:pl-0">
+                        Thumbnail
                       </th>
                       <th width="" className="py-4 pl-4 last:pl-0">
                         Actions
@@ -101,6 +104,9 @@ function ProgramPage() {
                       <tr key={program.id}>
                         <td className="text-sm font-medium text-dark-2">
                           {program.nama}
+                        </td>
+                        <td>
+                          <img src={`${program.gambar}`} className="w-24 h-24 rounded-lg" alt="" />
                         </td>
                         <td>
                           <div className="flex items-center gap-3">
