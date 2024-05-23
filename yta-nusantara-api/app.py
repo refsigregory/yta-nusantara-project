@@ -16,7 +16,7 @@ from slugify import slugify
 
 ## APP Init
 app = Flask(__name__)
-CORS(app, origins=["https://yta-nusantara.srv1.ref.si"])
+CORS(app, origins=[f"{os.environ.get('APP_BASE_URL')}"])
 api = Api(app)
 swagger = Swagger(app)
 db = SQLAlchemy()
@@ -106,7 +106,7 @@ class ProgramResource(Resource):
             program = Program.query.get(program_id)
             if program:
                 # Generate full URL for the image
-                gambar_url = f"{os.getenv('APP_BASE_URL')}/files/{program.gambar}"
+                gambar_url = f"{os.getenv('FILE_BASE_URL')}/files/{program.gambar}"
 
                 return {
                     "id": program.id,
@@ -124,7 +124,7 @@ class ProgramResource(Resource):
                 "nama": program.nama,
                 "deskripsi": program.deskripsi,
                 "tanggal": program.tanggal.strftime('%Y-%m-%d %H:%M:%S'),
-                "gambar": f"{os.getenv('APP_BASE_URL')}/files/{program.gambar}"  # Include the full URL for each image
+                "gambar": f"{os.getenv('FILE_BASE_URL')}/files/{program.gambar}"  # Include the full URL for each image
             } for program in programs]
             return programs_list
 
@@ -327,7 +327,7 @@ class SubProgramResource(Resource):
                   "nama": sub_program.nama,
                   "deskripsi": sub_program.deskripsi,
                   "program_id": sub_program.program_id,
-                  "gambar": f"{os.getenv('APP_BASE_URL')}/files/{sub_program.gambar}"
+                  "gambar": f"{os.getenv('FILE_BASE_URL')}/files/{sub_program.gambar}"
                   }
             else:
                 return {"message": "SubProgram not found"}, 404
@@ -338,7 +338,7 @@ class SubProgramResource(Resource):
               "nama": sub_program.nama,
               "deskripsi": sub_program.deskripsi,
               "program_id": sub_program.program_id,
-              "gambar": f"{os.getenv('APP_BASE_URL')}/files/{sub_program.gambar}"
+              "gambar": f"{os.getenv('FILE_BASE_URL')}/files/{sub_program.gambar}"
             } for sub_program in sub_programs]
             return sub_programs_list
 
@@ -392,7 +392,7 @@ class SubProgramResource(Resource):
             return {"message": "Nama and program_id are required"}, 400
 
         if gambar_file and allowed_file(gambar_file.filename):
-            gambar_filename = f"{nama}_{datetime.utcnow().strftime('%Y%m%d%H%M%S')}.jpg"
+            gambar_filename = f"{slugify(nama)}_{datetime.utcnow().strftime('%Y%m%d%H%M%S')}.jpg"
             gambar_data = gambar_file
             size = os.fstat(gambar_data.fileno()).st_size
             upload_object(gambar_filename, gambar_data, size)
@@ -454,7 +454,7 @@ class SubProgramResource(Resource):
 
             gambar_file = request.files.get('gambar')
             if gambar_file and allowed_file(gambar_file.filename):
-                gambar_filename = f"{sub_program.nama}_{datetime.utcnow().strftime('%Y%m%d%H%M%S')}.jpg"
+                gambar_filename = f"{slugify(sub_program.nama)}_{datetime.utcnow().strftime('%Y%m%d%H%M%S')}.jpg"
                 gambar_data = gambar_file
                 size = os.fstat(gambar_file.fileno()).st_size
                 upload_object(gambar_filename, gambar_data, size)
@@ -536,7 +536,7 @@ class ArtikelResource(Resource):
             
             artikel = Artikel.query.get(artikel_id)
             if artikel:
-                gambar_url = f"{os.getenv('APP_BASE_URL')}/files/{artikel.gambar}"
+                gambar_url = f"{os.getenv('FILE_BASE_URL')}/files/{artikel.gambar}"
                 return {
                     "id": artikel.id, 
                     "judul": artikel.judul,
@@ -552,7 +552,7 @@ class ArtikelResource(Resource):
                 "id": artikel.id, 
                 "judul": artikel.judul,
                 "konten": artikel.konten,
-                "gambar": f"{os.getenv('APP_BASE_URL')}/files/{artikel.gambar}",
+                "gambar": f"{os.getenv('FILE_BASE_URL')}/files/{artikel.gambar}",
                 "tanggal": artikel.tanggal.strftime('%Y-%m-%d %H:%M:%S')
             } for artikel in artikels]
             return artikels_list
@@ -988,7 +988,7 @@ class PublicResource(Resource):
                   "nama": sub_program.nama,
                   "deskripsi": sub_program.deskripsi,
                   "tanggal": sub_program.tanggal.strftime('%Y-%m-%d %H:%M:%S'),
-                  "gambar": f"{os.getenv('APP_BASE_URL')}/files/{sub_program.gambar}",
+                  "gambar": f"{os.getenv('FILE_BASE_URL')}/files/{sub_program.gambar}",
               })
 
           program_data = {
@@ -996,7 +996,7 @@ class PublicResource(Resource):
               "nama": program.nama,
               "deskripsi": program.deskripsi,
               "tanggal": program.tanggal.strftime('%Y-%m-%d %H:%M:%S'),
-              "gambar": f"{os.getenv('APP_BASE_URL')}/files/{program.gambar}",
+              "gambar": f"{os.getenv('FILE_BASE_URL')}/files/{program.gambar}",
               "sub_programs": sub_program_data,
           }
           program_list_data.append(program_data)
@@ -1009,8 +1009,7 @@ class PublicResource(Resource):
       offset = (page - 1) * per_page
       
       # Fetch article data (assuming it's a list of article details)
-      articles = Artikel.query.offset(offset).limit(per_page).all()
-
+      articles = Artikel.query.order_by(Artikel.tanggal.desc()).offset(offset).limit(per_page).all()
     
       # Get the total number of articles
       all_articles = Artikel.query.all()
@@ -1024,7 +1023,7 @@ class PublicResource(Resource):
           "title": article.judul,  # Assuming 'judul' is the title field for Artikel
           "content": article.konten,  # Assuming 'konten' is the content field for Artikel
           "date": article.tanggal.strftime('%Y-%m-%d %H:%M:%S'),
-          "image": f"{os.getenv('APP_BASE_URL')}/files/{article.gambar}"  # Adjust the path as needed
+          "image": f"{os.getenv('FILE_BASE_URL')}/files/{article.gambar}"  # Adjust the path as needed
       } for article in articles]
       
       # Return the article data and pagination information as the API response
