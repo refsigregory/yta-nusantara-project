@@ -1,3 +1,130 @@
+/* Font Family */
+@import url('https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  .flex::before,
+  .flex::after {
+      display: none !important;
+  }
+
+  img{
+      @apply object-cover;
+  }
+
+  body{
+      @apply font-primary text-dark-1;
+  }
+
+  /* admin */
+  /* Input:select text-color and placeholder color */
+  select:required:invalid {
+      @apply text-dark-3
+  }
+  option[value=""][disabled] {
+      @apply hidden
+  }
+  option {
+      @apply text-dark-1
+  }
+
+  table th, table td {
+      @apply py-2 !text-left
+  }
+
+  table tbody tr {
+      @apply border-b last:border-b-0 hover:bg-slate-100 transition-all
+  }
+
+  table tr td {
+      @apply pl-4 last:pl-0 first:pr-0 last:pr-4
+  }
+  /* end:admin */
+}
+
+@layer utilities {
+  .nav-link-item {
+      @apply flex flex-row items-center gap-1 text-dark-1 text-base font-semibold cursor-pointer hover:text-primary transition-all hover:underline underline-offset-2
+  }
+
+  .nav-link-item.active{
+      @apply underline;
+  }
+
+  .box-shadow {
+      box-shadow: 0px 4px 24px 0px rgba(182, 100, 14, 0.08);
+  }
+
+  .bg-gradient {
+      background: linear-gradient(358deg, rgba(57, 46, 20, 0.72) 24.06%, rgba(0, 0, 0, 0.00) 100.61%, rgba(227, 125, 17, 0.00) 100.61%);
+  }
+
+  .flickity-page-dots .dot.is-selected {
+      background: #F3AF67;
+  }
+
+  /* admin */
+  .desktop-only {
+      @apply hidden lg:block;
+  }
+
+  .desktop-tablet {
+      @apply hidden md:block;
+  }
+
+  .mobile-tablet {
+      @apply block lg:hidden;
+  }
+
+  .mobile-only {
+      @apply block md:hidden;
+  }
+
+  .filter-primary {
+      filter: brightness(0) saturate(100%) invert(48%) sepia(10%) saturate(4219%) hue-rotate(201deg) brightness(101%) contrast(101%);
+  }
+
+  .filter-white {
+      filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(335%) hue-rotate(37deg) brightness(104%) contrast(101%);
+  }
+
+  .shadow-primary {
+      @apply shadow-[0_0_0_2px_#6B77FF_inset]
+  }
+  /* end:admin */
+}
+
+@layer components {
+  .btn-primary {
+      @apply py-3 px-4 text-sm font-semibold rounded-lg bg-primary text-white inline-flex justify-center items-center w-max transition-all hover:bg-orange
+  }
+
+  /* admin */
+  .dashboard-link {
+      @apply w-full py-[13px] px-[26px] flex gap-3 items-center text-base text-dark-1 font-semibold rounded-full capitalize bg-transparent hover:bg-dark-1 hover:text-white transition-all max-w-[260px]
+  }
+
+  .dashboard-link.is-active {
+      @apply !text-white !bg-primary
+  }
+
+  .table-responsive {
+      @apply relative overflow-x-auto
+  }
+
+  .table-responsive table {
+      @apply md:min-w-[700px]
+  }
+
+  ul#breadcrumbLink li + li:before {
+      @apply content-['/'] mx-[30px]
+  }
+
+  .boxPayment input[type="radio"]:checked + label {
+      @apply shadow-primary
+  }
+  /* end:admin */
+}

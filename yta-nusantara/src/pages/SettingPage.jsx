@@ -94,7 +94,7 @@ function UserPasswordEditPage() {
             <AdminHeader
                 title="Edit User Password"
             />
-            <section className="w-full p-4 bg-[#FCFCFC] rounded-2xl flex flex-col max-w-[550px]">
+            <section className="w-full sm:p-4 bg-[#FCFCFC] rounded-2xl flex flex-col max-w-[550px]">
                 <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                     <div className="flex flex-col gap-2">
                         <label htmlFor="password" className="text-base font-medium text-dark-1">

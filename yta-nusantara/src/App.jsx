@@ -23,7 +23,6 @@ import WorkshopCreatePage from "./pages/WorkshopCreatePage";
 import WorkshopEditPage from "./pages/WorkshopEditPage";
 import UserPasswordEditPage from "./pages/SettingPage";
 
-
 function ProgramRoutes() {
   return (
     <Routes>
@@ -119,7 +118,11 @@ function AuthProvider({ children }) {
 
   let value = { user, signin, signout };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+        {children}
+    </AuthContext.Provider>
+  );
 }
 
 function RequireAuth({ children }) {
